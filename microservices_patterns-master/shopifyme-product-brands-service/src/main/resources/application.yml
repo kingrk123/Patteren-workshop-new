@@ -1,0 +1,22 @@
+server:
+  port: '${BRANDS_PORT:5002}'
+spring:
+  application:
+    name: shopify-me-brand-service
+  datasource:
+    password: '${BRANDS_DB_PASSWORD:root}'
+    url: jdbc:${BRANDS_DB_TYPE:mysql}://${BRANDS_DB_HOST:localhost}:${BRANDS_DB_PORT:3306}/${BRANDS_DB_NAME:shopifyme}
+    username: '${BRANDS_DB_USER_NAME:root}'
+  jpa:
+    hibernate:
+      ddl-auto: '${BRANDS_DB_DDL_AUTO:update}'
+    properties:
+      hibernate:
+        dialect: '${BRANDS_DB_DIALECT:org.hibernate.dialect.MySQL8Dialect}'
+        format_sql: '${BRANDS_DB_FORMAT_SQL:true}'
+    show-sql: '${BRANDS_DB_SHOW_SQL:false}'
+
+# swagger-ui custom path
+springdoc: 
+  swagger-ui: 
+    path: /swagger-ui.html

@@ -1,0 +1,42 @@
+server:
+  port: '${BRANDS_PORT:5002}'
+spring:
+  application:
+    name: shopify-me-brand-service
+  datasource:
+    password: '${BRANDS_DB_PASSWORD:root}'
+    url: jdbc:${BRANDS_DB_TYPE:mysql}://${BRANDS_DB_HOST:localhost}:${BRANDS_DB_PORT:3306}/${BRANDS_DB_NAME:shopifyme-product-brands}
+    username: '${BRANDS_DB_USER_NAME:root}'
+  jpa:
+    hibernate:
+      ddl-auto: '${BRANDS_DB_DDL_AUTO:update}'
+    properties:
+      hibernate:
+        dialect: '${BRANDS_DB_DIALECT:org.hibernate.dialect.MySQL8Dialect}'
+        format_sql: '${BRANDS_DB_FORMAT_SQL:true}'
+    show-sql: '${BRANDS_DB_SHOW_SQL:false}'
+  rabbitmq: 
+    host: lionfish.rmq.cloudamqp.com
+    virtual-host: ashtglls
+    username: ashtglls
+    password: u-b5DYCNMI5rRkl-F6BknFRojzdS8VuP
+           
+
+# swagger-ui custom path
+springdoc: 
+  swagger-ui: 
+    path: /swagger-ui.html
+    
+# outbouund api communication uri's 
+outbound:
+   api:
+     categories: 
+       uri: http://localhost:5001/api/v1
+
+amqp:
+  services:
+    category-service-queue: category-updates-queue
+
+#logging:
+#  level:
+#    root: warn  

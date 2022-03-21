@@ -1,0 +1,111 @@
+server:
+  port: '${BRANDS_PORT:5002}'
+spring:
+  application:
+    name: shopify-me-brand-service
+  datasource:
+    password: '${BRANDS_DB_PASSWORD:root}'
+    url: jdbc:${BRANDS_DB_TYPE:mysql}://${BRANDS_DB_HOST:localhost}:${BRANDS_DB_PORT:3306}/${BRANDS_DB_NAME:shopifyme-product-brands}
+    username: '${BRANDS_DB_USER_NAME:root}'
+  jpa:
+    hibernate:
+      ddl-auto: '${BRANDS_DB_DDL_AUTO:update}'
+    properties:
+      hibernate:
+        dialect: '${BRANDS_DB_DIALECT:org.hibernate.dialect.MySQL8Dialect}'
+        format_sql: '${BRANDS_DB_FORMAT_SQL:true}'
+    show-sql: '${BRANDS_DB_SHOW_SQL:false}'
+  rabbitmq: 
+    host: lionfish.rmq.cloudamqp.com
+    virtual-host: ashtglls
+    username: ashtglls
+    password: u-b5DYCNMI5rRkl-F6BknFRojzdS8VuP
+           
+
+# swagger-ui custom path
+springdoc: 
+  swagger-ui: 
+    path: /swagger-ui.html
+    
+# outbouund api communication uri's 
+outbound:
+   api:
+     categories: 
+       uri: http://localhost:5001/api/v1
+
+amqp:
+  services:
+    category-service-queue: category-updates-queue
+axon: 
+  eventhandling: 
+      processors: 
+         category-group: 
+             mode: subscribing
+             
+
+#logging:
+#  level:
+#    root: warn  
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        
+resilience4j: 
+  ratelimiter: 
+     instances: 
+       product-categories-rate-limiter: 
+          registerHealthIndicator: true
+          timeoutDuration: 3s
+          limitForPeriod: 2
+          limitRefreshPeriod: 5s
+  
+  retry: 
+    instances: 
+       product-categories-retry: 
+         maxAttempts: 3
+         wait-duration: 5s 
+  # Circuit Breaker Patterns
+  circuitbreaker: 
+  
+  # this property is used to register all circuit breaker health 
+  # realted information to microservice actuator. by default this
+  # will be disabled and now we are enabling
+    configs:
+      default:
+         registerHealthIndicator: true 
+    instances: 
+      product-categories-circuit: 
+               
+               # this will inform to circuit breaker to monitor
+               # the minimum of 5 requests to our api will fail, then the circuit will go to 
+               # opento state
+               # the default value is 50.
+               minimum-number-of-calls: 5
+               
+               # informing to circuit breaker to consider the threashold open the circuit
+               # here 50% means, the 50% of 5 requests coming i.e. 2.5~3 are failing
+               # then the circuit will open, so that it will open the circuit fail fast and will
+               # gives the response
+               failure-rate-threshold: 50
+               
+               # this is the property which will tell how much time the circuit breaker has to wait 
+               # to decide to go to the half-open circuit breaker state.here we are telling 30 secs to wait
+               # by default it will open for 60 secs.so after 30 seconds, circuit will open in half-open
+               # state and allow the requests to hit the service to check the service is working fine or not.
+               wait-duration-in-open-state: 30000
+               
+               # this is the property where informing to circuit breaker pattern, when we are in half open status
+               # how many requests we have to allow. here we are telling 2, so in 2, 50% i.e. 1 request will fail in
+               # half open state, then circuit will again go back to open state.
+               permitted-number-of-calls-in-half-open-state: 2 
+
+ 
+          
+         
+      
+        
+         
+      

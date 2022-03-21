@@ -1,0 +1,34 @@
+server:
+  port: 5004 
+spring: 
+  application: 
+    name: shipifyme-api-gateway
+ 
+  cloud: 
+   gateway: 
+     discovery: 
+       locator: 
+         enabled: true
+         lowerCaseServiceId: true
+     routes:
+      - id: shopifyme-category-service
+        uri: lb://categories-service
+        predicates:
+         - Path=/shopifyme-gateway/api/mycategories/**
+        filters:
+         - RewritePath=/shopifyme-gateway/api/mycategories/(?<segment>.*),/${segment}
+          
+management:
+ endpoints:
+   web:
+     exposure: 
+      include: "*"
+      
+shopifyme: 
+  provider: 
+     wso2:
+       #me-endpoint: https://${WSO2_IAM_HOST:localhost}:${WS02_IAM_PORT:9443}/scim2/Me}" 
+       headerName: Authorization 
+       headerType: Bearer
+       base-uri: https://${WSO2_IAM_HOST:localhost}:${WS02_IAM_PORT:9443}
+       

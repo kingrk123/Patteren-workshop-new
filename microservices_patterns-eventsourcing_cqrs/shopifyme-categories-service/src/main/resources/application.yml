@@ -1,0 +1,58 @@
+server:
+  port: '${CATEGORIES_SERVICE_PORT:5001}'
+spring:
+  application:
+    name: shopify-me-categories-service
+  datasource:
+    password: '${CATEGORIES_DB_PASSWORD:root}'
+    url: jdbc:${CATEGORIES_DB_TYPE:mysql}://${CATEGOIRIES_DB_HOST:localhost}:${CATEGORIES_DB_PORT:3306}/${CATEGORIES_DB_NAME:shopifyme-categories}
+    username: '${CATEGORIES_DB_USER_NAME:root}'
+  jpa:
+    hibernate:
+      ddl-auto: '${CATEGORIES_DB_DDL_AUTO:update}'
+    properties:
+      hibernate:
+        dialect: '${CATEGORIES_DB_DIALECT:org.hibernate.dialect.MySQL8Dialect}'
+        format_sql: '${CATEGORIES_DB_FORMAT_SQL:true}'
+    show-sql: '${CATEGORIES_DB_SHOW_SQL:false}'
+  
+<<<<<<< HEAD
+  rabbitmq: 
+    host: lionfish.rmq.cloudamqp.com
+    virtual-host: ashtglls
+    username: ashtglls
+    password: u-b5DYCNMI5rRkl-F6BknFRojzdS8VuP
+    template:
+      exchange: category-updates-exchanger
+      routing-key: category-updates-routing-key    
+=======
+>>>>>>> 919217352a57094ed65d88e3e538e7af00dfaf8d
+  # Enable multipart uploads  
+  servlet: 
+    multipart:
+      enabled: true
+      
+      # Threshold after which files are written to disk.
+      file-size-threshold: 2KB
+      
+      # Max file size.
+      max-file-size: 200MB
+      
+      # Max Request Size
+      max-request-size: 215MB
+            
+file: 
+  storage: 
+    location: '${CATEGRIES_FILES_STORAGE:D:/trainigs_ws/LOCAL_FILE_STORAGE}'
+# swagger-ui custom path
+springdoc: 
+  swagger-ui: 
+    path: /swagger-ui.html
+<<<<<<< HEAD
+    
+
+=======
+>>>>>>> 919217352a57094ed65d88e3e538e7af00dfaf8d
+
+
+              
